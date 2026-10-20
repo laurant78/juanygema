@@ -1,0 +1,665 @@
+:root {
+  --paper: #faf8f5;
+  --paper-dark: #f0eae1;
+  --olive: #5a6345;
+  --olive-dark: #3a412b;
+  --gold: #b59a64;
+  --ink: #38332a;
+  --envelope-green: #6c9371;
+  --envelope-green-dark: #58795c;
+  --envelope-green-light: #7da582;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+/* SECCIONES Y HOJAS CON MARCO ELEGANTE */
+.page {
+  min-height: 100svh;
+  padding: 80px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border: 1px solid rgba(181, 154, 100, 0.35);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* FONDOS */
+.hero-bg, .celebration-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.hero-bg {
+  background-image: url('fondo_inicio.jpg');
+  background-position: center 30%;
+  opacity: 0.55;
+  z-index: 1;
+}
+
+/* TOPE DE LA FOTO: se ve grande a todo el ancho, pero el encuadre se ajusta
+   para que no se corte la cabeza de nadie. Si hace falta, cambia el 28%. */
+@media (min-width: 768px) {
+  .hero-bg { background-position: center 28%; }
+}
+
+.celebration-bg { 
+  background-image: url('hospederia.jpg'); 
+  opacity: 0.35; 
+  z-index: 1;
+}
+
+.page-content {
+  position: relative;
+  z-index: 4;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* FOTO MONASTERIO */
+.section-photo {
+  width: min(75vw, 280px);
+  aspect-ratio: 16 / 10;
+  margin: 15px auto;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+  border: 1px solid rgba(181, 154, 100, 0.4);
+}
+
+.section-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* TIPOGRAFÍAS Y RESALTADO DE TEXTO */
+h1, h2, h3, .names {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+}
+
+/* Efecto de resalte en la tipografía de la portada */
+h1.title-welcome {
+  font-size: clamp(2.2rem, 5.8vw, 4rem);
+  line-height: 1.05;
+  margin: 12px 0 20px;
+  color: var(--olive-dark);
+  text-shadow: 0 0 10px rgba(250, 248, 245, 0.9), 0 0 20px rgba(250, 248, 245, 0.9), 0 1px 2px rgba(255, 255, 255, 1);
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  line-height: 0.95;
+  color: var(--olive-dark);
+  text-shadow: 0 0 12px rgba(250, 248, 245, 0.95), 0 1px 2px rgba(255, 255, 255, 1);
+}
+
+.ampersand {
+  color: var(--gold);
+  font-size: 2.8rem;
+  margin: 4px 0;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 0 10px rgba(250, 248, 245, 0.9);
+}
+
+.date {
+  letter-spacing: 0.15em;
+  font-size: 0.95rem;
+  margin: 20px 0 18px;
+  color: var(--ink);
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(250, 248, 245, 0.9);
+}
+
+h2 {
+  font-size: clamp(2.5rem, 6.5vw, 4.2rem);
+  margin: 10px 0 20px;
+  color: var(--olive-dark);
+}
+
+h3 {
+  font-size: clamp(2rem, 5.5vw, 3rem);
+  line-height: 1.1;
+  margin: 15px 0;
+  color: var(--ink);
+}
+
+p {
+  line-height: 1.7;
+}
+
+.badge-date {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.75rem;
+  color: var(--gold);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(181, 154, 100, 0.4);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.section-tag {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.65rem;
+  color: var(--olive);
+}
+
+/* BOTONES */
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  padding: 14px 28px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  cursor: pointer;
+  border: 1px solid var(--olive);
+  transition: 0.3s ease;
+  border-radius: 2px;
+}
+
+.button-outline {
+  color: var(--olive-dark);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  font-weight: 500;
+}
+
+.button-outline:hover {
+  color: white;
+  background: var(--olive);
+}
+
+.button-filled {
+  width: 100%;
+  color: white;
+  background: var(--olive);
+  border: 0;
+}
+
+.button-filled:hover {
+  background: var(--olive-dark);
+}
+
+/* CUENTA ATRÁS */
+.countdown-wrap {
+  margin-top: 35px;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 3.5vw, 25px);
+  margin: 15px 0;
+}
+
+.countdown div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 55px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 6px;
+  border-radius: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border: 1px solid rgba(181, 154, 100, 0.25);
+}
+
+.countdown strong {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--olive-dark);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 600;
+}
+
+.countdown span {
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.eyebrow {
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(250, 248, 245, 0.9);
+}
+
+.small-note {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(250, 248, 245, 0.9);
+}
+
+.back-top {
+  margin-top: 25px;
+  color: var(--olive);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}
+
+.ceremony { background: #f4efe6; }
+.celebration { background: #ede7dc; }
+.lodging { background: #e5ded2; }
+
+.lodging-intro {
+  font-size: 0.9rem;
+  max-width: 500px;
+  margin-bottom: 15px;
+}
+
+.hotel-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 20px;
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+  font-size: 0.82rem;
+}
+
+.hotel-list li {
+  background: rgba(255, 255, 255, 0.85);
+  margin-bottom: 8px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--olive);
+  border-radius: 2px;
+}
+
+.hotel-list a {
+  color: var(--olive-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.section-copy {
+  max-width: 480px;
+  font-size: 0.96rem;
+}
+
+.time {
+  margin: 15px 0 25px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+/* FORMULARIO */
+.rsvp { background: #f0eae1; }
+
+#rsvpForm {
+  width: 100%;
+  max-width: 480px;
+  margin-top: 15px;
+  text-align: left;
+}
+
+#rsvpForm label {
+  display: block;
+  margin: 15px 0 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+#rsvpForm input, #rsvpForm textarea, #rsvpForm select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d4c5b0;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink);
+  outline-color: var(--olive);
+}
+
+#rsvpForm textarea { resize: vertical; }
+#rsvpForm .button { margin-top: 20px; }
+
+.farewell { background: #e5ded2; }
+.farewell-names { font-size: clamp(2.8rem, 8vw, 4rem); }
+
+/* SOBRE PANTALLA INICIAL */
+.envelope-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 20px;
+  background: #242424;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.envelope-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.envelope-container {
+  width: min(80vw, 270px);
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.5;
+  background-color: var(--envelope-green);
+  border-radius: 3px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: var(--envelope-green-dark);
+}
+
+.envelope-flap-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: var(--envelope-green);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.6s ease, z-index 0.2s ease;
+  z-index: 4;
+}
+
+.envelope-flap-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: var(--envelope-green);
+  clip-path: polygon(0 100%, 100% 100%, 50% 0);
+  z-index: 3;
+}
+
+.envelope-flap-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 55%;
+  background: var(--envelope-green-dark);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  opacity: 0.4;
+  z-index: 2;
+}
+
+.envelope-flap-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  background: var(--envelope-green-light);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  opacity: 0.4;
+  z-index: 2;
+}
+
+.gold-wax-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffe89c, #d4af37 40%, #aa8210 70%, #684d00 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  z-index: 5;
+  transition: transform 0.3s ease, opacity 0.4s ease;
+}
+
+.seal-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 235, 170, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seal-inner span {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #5c4300;
+}
+
+.envelope-hint {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #cccccc;
+  margin: 0;
+}
+
+.envelope-screen.opening .envelope-flap-top {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+
+.envelope-screen.opening .gold-wax-seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.envelope-screen.opening .envelope {
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all 0.6s ease 0.2s;
+}
+
+/* MENSAJE EMERGENTE (MODAL) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background: var(--paper);
+  border: 1px solid var(--gold);
+  padding: 35px 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  animation: modalScale 0.3s ease;
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.modal-content h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  color: var(--olive-dark);
+  margin: 0 0 10px 0;
+}
+
+.modal-content p {
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+  color: var(--ink);
+}
+
+@keyframes modalScale {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .page { padding: 65px 20px; }
+  .page::before { inset: 15px; }
+  .countdown { gap: 10px; }
+}
+
+/* ===== SEPARACIÓN ENTRE EL MARCO Y EL CONTENIDO ===== */
+.page { padding-inline: 64px; }
+
+/* ===== PORTADA (hoja 1) ===== */
+/* Letras como las de la última hoja: nombres verde oliva y & dorado, más pequeño.
+   El título queda arriba (cielo), las caras en el centro libres, y nombres, fecha,
+   botón y cuenta atrás abajo. */
+.hero { --halo: 0 0 10px rgba(250, 248, 245, 0.95), 0 0 22px rgba(250, 248, 245, 0.9); }
+
+.hero .page-content { flex: 1; }
+
+.hero .names {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3em;
+  margin-top: auto;
+  font-size: clamp(2.6rem, 7vw, 4rem);
+}
+
+.hero .ampersand {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  margin: 0;
+}
+
+/* Cuenta atrás sin cajitas y con otro color (cámbialo aquí) */
+.hero .countdown div {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.hero .countdown strong {
+  color: var(--olive-dark);
+  text-shadow: var(--halo);
+}
+
+.hero .countdown span {
+  color: var(--ink);
+  font-weight: 500;
+  text-shadow: var(--halo);
+}
+
+/* ===== DECORACIÓN hojas 2 a 6: marco dorado doble + cerezos que entran por los lados ===== */
+.page:not(.hero) {
+  --cerezo: clamp(100px, 20vw, 150px);
+  padding-block: calc(var(--cerezo) + 10px);
+}
+
+.page:not(.hero)::before {
+  inset: 16px;
+  border: 2px solid var(--gold);
+  outline: 1px solid rgba(181, 154, 100, 0.55);
+  outline-offset: -8px;
+}
+
+.page:not(.hero)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: url('cerezo-sup.svg'), url('cerezo-inf.svg');
+  background-repeat: no-repeat;
+  background-size: var(--cerezo) var(--cerezo);
+  /* fuera de la hoja: el de arriba a la izquierda, el de abajo a la derecha */
+  background-position: calc(var(--cerezo) * -1) 0, calc(100% + var(--cerezo)) 100%;
+  transition: background-position 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* script.js añade .is-visible cuando la hoja entra en pantalla */
+.page.is-visible::after {
+  background-position: 0 0, 100% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page:not(.hero)::after { transition: none; }
+}
+
+@media (max-width: 480px) {
+  .page { padding-inline: 40px; }
+}
