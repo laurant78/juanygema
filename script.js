@@ -1,3 +1,6 @@
+// Al recargar la página, empezar siempre por la hoja 1 (el navegador suele recordar dónde estabas)
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
 document.addEventListener("DOMContentLoaded", () => {
   const weddingDate = new Date("2027-09-25T18:00:00+02:00");
 
@@ -6,16 +9,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const openEnvelope = document.getElementById("openEnvelope");
 
   document.body.classList.add("no-scroll");
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  window.addEventListener("load", () => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
 
   openEnvelope.addEventListener("click", () => {
     if (envelopeScreen.classList.contains("opening")) return;
+
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });  // al abrir, siempre la hoja 1
 
     envelopeScreen.classList.add("opening");
 
     window.setTimeout(() => {
       envelopeScreen.classList.add("is-hidden");
       document.body.classList.remove("no-scroll");
-    }, 700);
+    }, 900);
   });
 
   // CUENTA ATRÁS
@@ -66,44 +73,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   calendarLink.href = calendarURL;
 
-  // LÓGICA DEL FORMULARIO Y PREBODA
+  // LÓGICA DEL FORMULARIO
   const selectBoda = document.getElementById("boda");
   const detallesAsistencia = document.getElementById("detallesAsistencia");
-  const inputNombre = document.getElementById("nombre");
-  const bloquePreboda = document.getElementById("bloquePreboda");
-  const selectPreboda = document.getElementById("preboda");
+  const selectAcompanado = document.getElementById("acompanado");
+  const bloqueAcompanantes = document.getElementById("bloqueAcompanantes");
+  const numAcompanantes = document.getElementById("numAcompanantes");
+  const listaAcompanantes = document.getElementById("listaAcompanantes");
+  const selectNinos = document.getElementById("ninos");
+  const bloqueNinos = document.getElementById("bloqueNinos");
 
-  // Nombres autorizados a la preboda (en minúsculas)
-  const invitadosPreboda = ["anton", "pablo", "familia garcia", "carlos"];
+  // Muestra u oculta un grupo y lo desactiva (un grupo desactivado no se envía ni se valida)
+  function mostrarGrupo(grupo, visible) {
+    grupo.hidden = !visible;
+    grupo.disabled = !visible;
+  }
 
-  function actualizarFormulario() {
-    const asisteBoda = selectBoda.value === "Si";
-    const nombreEscrito = inputNombre.value.toLowerCase().trim();
+  // Crea un bloque "nombre + alergias" por cada acompañante, conservando lo ya escrito
+  function pintarAcompanantes() {
+    const max = parseInt(numAcompanantes.max, 10) || 4;
+    const n = Math.min(Math.max(parseInt(numAcompanantes.value, 10) || 0, 0), max);
+    const anteriores = [...listaAcompanantes.querySelectorAll(".acompanante")].map((bloque) => [
+      bloque.querySelector("input").value,
+      bloque.querySelector("textarea").value
+    ]);
 
-    if (asisteBoda) {
-      detallesAsistencia.style.display = "block";
-
-      const estaInvitadoPreboda = invitadosPreboda.some(invitado => nombreEscrito.includes(invitado));
-
-      if (estaInvitadoPreboda) {
-        bloquePreboda.style.display = "block";
-        selectPreboda.setAttribute("required", "true");
-      } else {
-        bloquePreboda.style.display = "none";
-        selectPreboda.removeAttribute("required");
-        selectPreboda.value = "";
+    listaAcompanantes.innerHTML = "";
+    for (let i = 1; i <= n; i++) {
+      const bloque = document.createElement("div");
+      bloque.className = "acompanante";
+      bloque.innerHTML = `
+        <label for="acompNombre${i}">Nombre del acompañante ${i}</label>
+        <input id="acompNombre${i}" name="Acompañante ${i} - Nombre" type="text" placeholder="Nombre y apellidos" required>
+        <label for="acompAlergias${i}">¿Tiene alguna alergia?</label>
+        <textarea id="acompAlergias${i}" name="Acompañante ${i} - Alergias" rows="2" placeholder="Si no tiene ninguna, déjalo en blanco"></textarea>`;
+      if (anteriores[i - 1]) {
+        bloque.querySelector("input").value = anteriores[i - 1][0];
+        bloque.querySelector("textarea").value = anteriores[i - 1][1];
       }
-    } else {
-      detallesAsistencia.style.display = "none";
-      bloquePreboda.style.display = "none";
-      selectPreboda.removeAttribute("required");
+      listaAcompanantes.appendChild(bloque);
     }
   }
 
-  if (selectBoda && inputNombre) {
-    selectBoda.addEventListener("change", actualizarFormulario);
-    inputNombre.addEventListener("input", actualizarFormulario);
+  function actualizarFormulario() {
+    const asiste = selectBoda.value === "Si";
+    mostrarGrupo(detallesAsistencia, asiste);
+    mostrarGrupo(bloqueAcompanantes, asiste && selectAcompanado.value === "Si");
+    mostrarGrupo(bloqueNinos, asiste && selectNinos.value === "Si");
   }
+
+  selectBoda.addEventListener("change", actualizarFormulario);
+  selectAcompanado.addEventListener("change", actualizarFormulario);
+  selectNinos.addEventListener("change", actualizarFormulario);
+  numAcompanantes.addEventListener("input", pintarAcompanantes);
 
   // ENVÍO DE FORMULARIO A FORMSPREE CON MENSAJE EMERGENTE
   const rsvpForm = document.getElementById("rsvpForm");
@@ -136,8 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
           successModal.style.display = "flex";
           // Limpiar formulario
           rsvpForm.reset();
-          if (detallesAsistencia) detallesAsistencia.style.display = "none";
-          if (bloquePreboda) bloquePreboda.style.display = "none";
+          listaAcompanantes.innerHTML = "";
+          actualizarFormulario();
         } else {
           alert("Hubo un error al enviar el formulario. Inténtalo de nuevo.");
         }
@@ -159,12 +181,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // CEREZOS: entran por los lados cuando cada hoja aparece en pantalla
-  const hojas = document.querySelectorAll(".page");
-  const observador = new IntersectionObserver((entradas) => {
-    entradas.forEach((entrada) => {
-      entrada.target.classList.toggle("is-visible", entrada.isIntersecting);
-    });
-  }, { threshold: 0.15 });
-  hojas.forEach((hoja) => observador.observe(hoja));
 });

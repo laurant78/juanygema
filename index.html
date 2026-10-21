@@ -25,7 +25,7 @@
 
         <div class="gold-wax-seal">
           <div class="seal-inner">
-            <span>J&amp;G</span>
+            <span class="monograma"><b>J</b><b>G</b></span>
           </div>
         </div>
       </div>
@@ -51,11 +51,6 @@
 
         <p class="date">25 de septiembre de 2027</p>
 
-        <a id="calendarLink" class="button button-outline"
-           href="#" target="_blank" rel="noopener">
-          ♡ Save the date
-        </a>
-
         <div class="countdown-wrap">
           <p class="eyebrow">La cuenta atrás ha comenzado</p>
           <div id="countdown" class="countdown">
@@ -65,20 +60,24 @@
             <div><strong id="seconds">--</strong><span>Segundos</span></div>
           </div>
         </div>
+
+
+
+
+        <a id="calendarLink" class="button button-outline"
+           href="#" target="_blank" rel="noopener">
+          ♡ Save the date
+        </a>
       </div>
     </section>
 
     <!-- HOJA 2: CEREMONIA -->
     <section class="page ceremony" id="ceremonia">
       <div class="page-content">
-        <span class="section-tag">Ubicación</span>
-        <h2>La ceremonia</h2>
+  
+        <h3>La ceremonia religiosa tendrá lugar en</h3>
 
-        <p class="section-copy">
-          La ceremonia tendrá lugar en
-        </p>
-
-        <h3>El Real Monasterio<br>de Guadalupe</h3>
+        <h2>El Real Monasterio<br>de Guadalupe</h2>
 
         <div class="section-photo">
           <img src="monasterio.jpg" alt="Real Monasterio de Guadalupe" onerror="this.style.display='none';">
@@ -96,28 +95,23 @@
 
     <!-- HOJA 3: CELEBRACIÓN -->
     <section class="page celebration" id="celebracion">
-      <div class="celebration-bg"></div>
-
       <div class="page-content">
-        <span class="section-tag">Y después...</span>
-        <h2>La celebración</h2>
+        
+        <h3>Y después continuaremos la celebración en</h3>
 
-        <p class="section-copy">
-          Continuaremos la celebración en la
-        </p>
+        <h2>Hospedería del Real Monasterio de Guadalupe</h2>
 
-        <h3>Hospedería del Real Monasterio de Guadalupe</h3>
+        <div class="section-photo">
+          <img src="hospederia.jpg" alt="Hospedería del Real Monasterio de Guadalupe" onerror="this.style.display='none';">
+        </div>
 
-        <p class="section-copy">
-          Nos esperan abrazos, brindis, risas y muchos recuerdos por crear.
-        </p>
+        
       </div>
     </section>
 
     <!-- HOJA 4: ALOJAMIENTO -->
     <section class="page lodging" id="alojamiento">
       <div class="page-content">
-        <span class="section-tag">Información útil</span>
         <h2>Alojamiento</h2>
 
         <p class="section-copy lodging-intro">
@@ -127,7 +121,7 @@
 
         <ul class="hotel-list">
           <li><strong>Hospedería Real Monasterio de Guadalupe:</strong> <a href="tel:927367000">927 36 70 00</a></li>
-          <li><strong>Hotel rural Posada del Rincón:</strong> <a href="tel:927367114">927 36 71 14</a></li>
+          <li><strong>Hotel rural Posada del Rincón:</strong> <a href="tel:927367114">927 36 71 14</a> (mínimo dos noches)</li>
           <li><strong>Hostal Alba Taruta:</strong> <a href="tel:670449176">670 44 91 76</a></li>
           <li><strong>Hotel Hispanidad:</strong> <a href="tel:927154210">927 15 42 10</a></li>
         </ul>
@@ -141,7 +135,7 @@
     <!-- HOJA 5: CONFIRMACIÓN -->
     <section class="page rsvp" id="asistencia">
       <div class="page-content">
-        <span class="section-tag">RSVP</span>
+      
         <h2>¿Nos acompañas?</h2>
 
         <p class="section-copy">
@@ -159,23 +153,45 @@
             <option value="No">No podré asistir</option>
           </select>
 
-          <div id="detallesAsistencia" style="display: none;">
-            <div id="bloquePreboda" style="display: none;">
-              <label for="preboda">¿Vas a asistir a la preboda?</label>
-              <select id="preboda" name="Asistencia a la preboda">
-                <option value="">Selecciona una opción</option>
-                <option>Sí, allí estaré</option>
-                <option>No podré asistir</option>
-                <option>Todavía no lo sé</option>
-              </select>
-            </div>
+          <!-- Todo lo de dentro solo aparece si dice que sí asiste -->
+          <fieldset id="detallesAsistencia" class="grupo" hidden disabled>
+            <label for="preboda">¿Vas a asistir a la preboda?</label>
+            <select id="preboda" name="Asistencia a la preboda" required>
+              <option value="">Selecciona una opción</option>
+              <option>Sí, allí estaré</option>
+              <option>No podré asistir</option>
+              <option>Todavía no lo sé</option>
+            </select>
 
             <label for="alergias">¿Tienes alguna alergia?</label>
-            <textarea id="alergias" name="Alergias" rows="3" placeholder="Cuéntanos si debemos tener algo en cuenta"></textarea>
+            <textarea id="alergias" name="Alergias" rows="2" placeholder="Si no tienes ninguna, déjalo en blanco"></textarea>
 
-            <label for="mensaje">¿Nos quieres mandar algún mensaje?</label>
-            <textarea id="mensaje" name="Mensaje" rows="3" placeholder="Déjanos unas palabras..."></textarea>
-          </div>
+            <label for="acompanado">¿Vas acompañado/a?</label>
+            <select id="acompanado" name="Va acompañado" required>
+              <option value="">Selecciona una opción</option>
+              <option value="Si">Sí</option>
+              <option value="No">No, voy solo/a</option>
+            </select>
+
+            <!-- Aparece si va acompañado. El máximo se cambia en max="4" -->
+            <fieldset id="bloqueAcompanantes" class="grupo" hidden disabled>
+              <label for="numAcompanantes">¿Cuántos acompañantes?</label>
+              <input id="numAcompanantes" name="Número de acompañantes" type="number" min="1" max="4" inputmode="numeric" placeholder="Escribe un número" required>
+              <div id="listaAcompanantes"></div>
+            </fieldset>
+
+            <label for="ninos">¿Van niños?</label>
+            <select id="ninos" name="Van niños" required>
+              <option value="">Selecciona una opción</option>
+              <option value="Si">Sí</option>
+              <option value="No">No</option>
+            </select>
+
+            <fieldset id="bloqueNinos" class="grupo" hidden disabled>
+              <label for="numNinos">¿Cuántos niños?</label>
+              <input id="numNinos" name="Número de niños" type="number" min="1" max="10" inputmode="numeric" placeholder="Escribe un número" required>
+            </fieldset>
+          </fieldset>
 
           <button class="button button-filled" type="submit" id="submitBtn" style="margin-top: 20px;">
             Enviar respuesta ♡
